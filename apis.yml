@@ -1,0 +1,43 @@
+aid: unirateapi
+name: UniRate API
+description: The UniRate API provides current foreign-exchange rates, currency conversion, a list of supported
+  currencies, and country VAT rates over a simple REST interface. Current-rate endpoints are available
+  on a free, self-serve tier (get a key at https://unirateapi.com); historical endpoints require a Pro
+  subscription. Open-source client libraries are published for Python, Node/TypeScript, Go, Rust, Ruby,
+  PHP, Java, Swift, .NET and more.
+type: Index
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/unirateapi/refs/heads/main/apis.yml
+created: '2026-09-16'
+modified: '2026-09-16'
+tags:
+- Currency
+- Exchange Rates
+- Foreign Exchange
+- Forex
+- Currency Conversion
+- VAT
+- Finance
+- Financial Data
+apis:
+- name: UniRate API
+  description: 'Current foreign-exchange rates, currency conversion, supported-currency listing, and country
+    VAT rates. Authentication is via an api_key query parameter; every request should send an Accept:
+    application/json header. Free, self-serve tier available.'
+  humanURL: https://unirateapi.com
+  baseURL: https://api.unirateapi.com
+  properties:
+  - type: OpenAPI
+    url: https://raw.githubusercontent.com/UniRate-API/openapi/main/openapi.yaml
+  - type: Documentation
+    url: https://unirateapi.com
+common:
+- type: Website
+  url: https://unirateapi.com
+- type: APIsJSON
+  url: https://raw.githubusercontent.com/UniRate-API/openapi/main/apis.json
+- type: GitHubOrg
+  url: https://github.com/UniRate-API
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
