@@ -1,0 +1,24 @@
+generated: '2026-09-16'
+method: searched
+source: https://unirateapi.com/widgets
+note: >-
+  UniRate publishes an embeddable, client-side currency-converter widget — a drop-in
+  HTML/JS surface distinct from the language SDKs. It pulls rates from UniRate's public
+  endpoint at page load and needs no API key or signup. Advertised as used on 400+ sites,
+  supporting 870+ currencies, working on WordPress, Wix, Squarespace, Webflow, Ghost and
+  plain HTML.
+families:
+- name: Currency Converter Widget
+  kind: embeddable-web-widget
+  variants: 6
+  description: Live currency converter rendered from a data-attribute-configured <div>.
+  markup: '<div id="unirate-converter" data-from="USD" data-to="EUR" data-amount="100"></div>'
+loaders:
+- name: unirate-widgets.css
+  url: https://unirateapi.com/lander/static/css/unirate-widgets.css
+  version: null
+  note: Unpinned CDN URL — floats to latest; a consumer cannot tell which build they load.
+- name: unirate-widgets.js
+  url: https://unirateapi.com/lander/static/js/unirate-widgets.js
+  version: null
+  note: Unpinned CDN URL — floats to latest.

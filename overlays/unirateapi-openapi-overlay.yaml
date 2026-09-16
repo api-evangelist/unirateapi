@@ -1,0 +1,44 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for UniRate API
+  version: 1.0.0
+extends: openapi/unirateapi-openapi.yaml
+x-generated: '2026-09-16'
+x-method: generated
+x-source: >-
+  Non-mutating overlay capturing API Evangelist enrichment findings against the curated
+  UniRate OpenAPI. Applies operational context (rate limits, live-spec cross-reference,
+  content negotiation) discovered during enrichment. Does not alter the original spec.
+actions:
+- target: $.info
+  update:
+    x-api-evangelist:
+      profile: https://apievangelist.com
+      catalog: https://apis.io
+      live-spec: https://api.unirateapi.com/apispec_1.json
+      note: >-
+        A live Flasgger-served Swagger 2.0 spec exists at api.unirateapi.com/apispec_1.json
+        and additionally documents /api/commodities/* endpoints (precious metals + 19
+        commodities, Pro tier) not present in this curated 3.1 spec.
+- target: $.info
+  update:
+    x-rate-limits:
+      free_per_day: 200
+      pro_per_day: 25000
+      historical_pro_per_day: 1000
+      reset: midnight UTC
+      exhaustion_status: 429
+      headers_documented: false
+- target: $.paths['/api/currencies'].get
+  update:
+    x-required-header: 'Accept: application/json (otherwise an HTML 404 page is returned)'
+- target: $.paths['/api/historical/rates'].get
+  update:
+    x-tier: pro
+    x-coverage-from: '1999-01-04'
+- target: $.paths['/api/historical/timeseries'].get
+  update:
+    x-tier: pro
+- target: $.paths['/api/historical/limits'].get
+  update:
+    x-tier: pro

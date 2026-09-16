@@ -1,0 +1,27 @@
+generated: '2026-09-16'
+method: searched
+source: https://github.com/UniRate-API/unirate-cli (+ homebrew-unirate tap, scoop-unirate bucket)
+name: unirate-cli
+official: true
+language: Go
+description: >-
+  Official command-line client for the UniRate API — currency conversion, exchange rates,
+  and VAT lookups from the terminal.
+install:
+- method: homebrew
+  command: brew install UniRate-API/unirate/unirate
+  source: https://github.com/UniRate-API/homebrew-unirate
+- method: scoop
+  command: scoop bucket add unirate https://github.com/UniRate-API/scoop-unirate; scoop install unirate
+  source: https://github.com/UniRate-API/scoop-unirate
+- method: go
+  command: go install github.com/UniRate-API/unirate-cli@latest
+auth:
+  note: Uses a UniRate API key (typically via UNIRATE_API_KEY env var / flag), same key as the REST API.
+commands:
+- convert — convert an amount between currencies
+- rates / exchange rates — current rate(s) for a base currency
+- vat — country VAT rates
+note: >-
+  Command surface summarized from the repo description; the binary itself is cataloged in
+  packages/ (registry: null — distributed via tap/bucket, no central-registry metadata).

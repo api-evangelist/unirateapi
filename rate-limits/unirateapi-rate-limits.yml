@@ -1,0 +1,33 @@
+generated: '2026-09-16'
+method: searched
+source: https://unirateapi.com/pricing (limits and 429 behavior) and openapi/unirateapi-openapi.yaml (429 response)
+limit_count: 3
+note: >-
+  Limits are enforced per API key and reset at midnight UTC. On exhaustion the API returns
+  HTTP 429 with a JSON body ({"error":"Rate limit exceeded"}). The published docs describe
+  the reset timing in prose ("429 error with information about when your limit resets
+  (midnight UTC)") but do NOT document machine-readable RateLimit-*/X-RateLimit-*/Retry-After
+  response headers, so an agent must fall back to the documented daily quota rather than a
+  runtime header signal.
+limits:
+- scope: per-key
+  window: day
+  limit: 200
+  tier: Free
+  note: 6,000/month equivalent.
+- scope: per-key
+  window: day
+  limit: 25000
+  tier: Pro
+  note: 750,000/month equivalent.
+- scope: per-key
+  window: day
+  limit: 1000
+  tier: Pro
+  endpoint_group: /api/historical/*
+  note: Historical requests capped separately at 1,000/day (30,000/month).
+exhaustion:
+  status: 429
+  reset: midnight UTC
+  body: '{"error":"Rate limit exceeded"}'
+  headers_documented: false

@@ -1,0 +1,35 @@
+generated: '2026-09-16'
+method: derived
+source: >-
+  Derived from the 4xx/5xx responses in openapi/unirateapi-openapi.yaml, enriched with the
+  error mapping documented in the unirate-mcp README.
+format: custom-json
+envelope: '{"error": "<human-readable message>"}'
+note: >-
+  UniRate does NOT use RFC 9457 problem+json. Every error is a flat JSON object with a single
+  `error` string. Status codes carry the semantic distinction.
+problem_types:
+- status: 400
+  name: BadRequest
+  message: Invalid request parameters
+  remediation: Check required query parameters (from/to/date/amount) and their formats.
+- status: 401
+  name: Unauthorized
+  message: Missing or invalid API key
+  remediation: Pass a valid key as the `api_key` query parameter. Get one free at https://unirateapi.com.
+- status: 403
+  name: ProRequired
+  message: Endpoint requires a Pro subscription
+  remediation: Historical and commodities endpoints require a Pro plan; upgrade at https://unirateapi.com.
+- status: 404
+  name: CurrencyNotFound
+  message: Currency not found or no data available
+  remediation: 'Verify the currency/country code against /api/currencies; also ensure Accept: application/json is sent.'
+- status: 429
+  name: RateLimited
+  message: Rate limit exceeded
+  remediation: Back off until the daily quota resets at midnight UTC, or upgrade for higher limits.
+- status: 503
+  name: ServiceUnavailable
+  message: Service unavailable
+  remediation: Transient — retry with backoff.

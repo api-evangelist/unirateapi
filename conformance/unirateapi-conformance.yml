@@ -1,0 +1,36 @@
+generated: '2026-09-16'
+method: derived
+source: >-
+  Derived from openapi/unirateapi-openapi.yaml and https://unirateapi.com. Currency/FX is a
+  domain with reference code standards (ISO 4217, ISO 3166) rather than a callable API
+  interoperability standard, so this is a reward-only, honest record of what the contract
+  actually conforms to.
+conformance:
+- id: iso4217
+  conforms: true
+  evidence: >-
+    All currency codes are ISO 4217 alpha-3 (from/to/base parameters, CurrenciesList schema).
+    The provider also publishes an ISO 4217 reference at https://unirateapi.com/currency-codes.
+  note: Domain code standard, not a message/interop standard.
+- id: iso3166
+  conforms: true
+  evidence: >-
+    VAT endpoints key on ISO-3166 alpha-2 country codes (Country parameter, VatEntry.country_code).
+- id: rfc9457
+  conforms: false
+  evidence: 'Errors are a flat {"error": "..."} object with content-type application/json, not application/problem+json.'
+- id: oauth2
+  conforms: false
+  evidence: Authentication is an api_key query parameter; no OAuth2/OIDC.
+- id: pagination
+  conforms: false
+  evidence: No paginated collections; responses are complete maps/arrays.
+- id: idempotency
+  conforms: false
+  evidence: Read-only GET surface; no idempotency mechanism (none needed).
+domain_standard:
+  present: false
+  note: >-
+    The FX/currency market has reference DATA standards (ISO 4217/3166, ECB reference rates —
+    UniRate cites the European Central Bank as its historical data source) but no callable API
+    interoperability standard (unlike PSD2/FDX in banking). No domain_standard_conformance claimed.

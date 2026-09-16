@@ -1,0 +1,674 @@
+openapi: 3.1.0
+info:
+  title: UniRate API
+  version: 0.1.0
+  summary: Free currency exchange rates, historical data, and VAT rates.
+  description: |
+    The **UniRate API** provides current and historical foreign-exchange rates,
+    currency conversion, a list of supported currencies, and country VAT rates.
+
+    ## Authentication
+
+    Every request must include your API key as the `api_key` query parameter:
+
+    ```
+    https://api.unirateapi.com/api/rates?api_key=YOUR_KEY&from=USD&to=EUR
+    ```
+
+    Get a free key at https://unirateapi.com.
+
+    ## Response format
+
+    Rate and amount values are returned as **strings** — parse them to a
+    decimal/float in your client. All endpoints accept an optional `format`
+    parameter (`json` default, plus `xml`, `csv`, `tsv`); when `format` is not
+    `json` the response body is the raw serialized string in that format.
+
+    > **Important:** always send `Accept: application/json`. Without it,
+    > `/api/currencies` responds with an HTML 404 page.
+
+    ## Free vs Pro
+
+    The current-rate endpoints (`/api/rates`, `/api/convert`, `/api/currencies`,
+    `/api/vat/rates`) are available on the free tier. The historical endpoints
+    (`/api/historical/*`) require a Pro subscription and return HTTP 403 on the
+    free tier.
+  contact:
+    name: UniRate Team
+    url: https://unirateapi.com
+  license:
+    name: MIT
+    identifier: MIT
+  x-canonical-source: _canonical-api-spec.md
+
+servers:
+  - url: https://api.unirateapi.com
+    description: Production
+
+externalDocs:
+  description: UniRate API documentation
+  url: https://unirateapi.com/docs
+
+security:
+  - ApiKeyAuth: []
+
+tags:
+  - name: Rates
+    description: Current exchange rates and conversion (free tier).
+  - name: Currencies
+    description: Supported currency metadata (free tier).
+  - name: VAT
+    description: Country VAT rates (free tier).
+  - name: Historical
+    description: Historical rates, time series, and coverage limits (Pro tier).
+
+paths:
+  /api/rates:
+    get:
+      operationId: getRates
+      tags: [Rates]
+      summary: Current exchange rates
+      description: |
+        Returns the current rate for a single `to` currency, or — when `to` is
+        omitted — all rates for the `from` base currency.
+      parameters:
+        - $ref: '#/components/parameters/From'
+        - $ref: '#/components/parameters/To'
+        - $ref: '#/components/parameters/Format'
+        - $ref: '#/components/parameters/Callback'
+      responses:
+        '200':
+          description: A single rate (when `to` is set) or a map of rates.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/SingleRate'
+                  - $ref: '#/components/schemas/RatesMap'
+              examples:
+                singleRate:
+                  summary: With `to`
+                  value: { rate: "0.92" }
+                allRates:
+                  summary: Without `to`
+                  value: { rates: { EUR: "0.92", GBP: "0.79" } }
+            text/plain:
+              schema:
+                type: string
+                description: Raw body when `format` is `xml`, `csv`, or `tsv`.
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/CurrencyNotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /api/convert:
+    get:
+      operationId: convert
+      tags: [Rates]
+      summary: Convert an amount between currencies
+      description: |
+        Converts `amount` from one currency to another at the current rate.
+        If `to` is omitted, some deployments return conversions to every
+        supported currency under `results`.
+      parameters:
+        - $ref: '#/components/parameters/From'
+        - $ref: '#/components/parameters/ToConvert'
+        - $ref: '#/components/parameters/Amount'
+        - $ref: '#/components/parameters/Format'
+        - $ref: '#/components/parameters/Callback'
+      responses:
+        '200':
+          description: A single converted result, or a map of results.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/SingleResult'
+                  - $ref: '#/components/schemas/ResultsMap'
+              examples:
+                single:
+                  summary: Normal
+                  value: { result: "92.50" }
+                all:
+                  summary: Without `to`
+                  value: { results: { EUR: "92.50" } }
+            text/plain:
+              schema:
+                type: string
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/CurrencyNotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /api/currencies:
+    get:
+      operationId: getCurrencies
+      tags: [Currencies]
+      summary: Supported currencies
+      description: |
+        Returns the list of supported currency codes.
+
+        **Must** be called with `Accept: application/json`; otherwise the API
+        responds with an HTML 404 page.
+      parameters:
+        - $ref: '#/components/parameters/Format'
+        - $ref: '#/components/parameters/Callback'
+      responses:
+        '200':
+          description: List of supported ISO currency codes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrenciesList'
+              examples:
+                default:
+                  value: { currencies: ["USD", "EUR", "GBP"] }
+            text/plain:
+              schema:
+                type: string
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/CurrencyNotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /api/vat/rates:
+    get:
+      operationId: getVatRates
+      tags: [VAT]
+      summary: Country VAT rates
+      description: |
+        Returns VAT rates for all countries, or — when `country` is supplied —
+        the VAT data for a single country.
+      parameters:
+        - $ref: '#/components/parameters/Country'
+        - $ref: '#/components/parameters/Format'
+        - $ref: '#/components/parameters/Callback'
+      responses:
+        '200':
+          description: All VAT rates, or a single country's VAT data.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/VatRatesAll'
+                  - $ref: '#/components/schemas/VatRateSingle'
+              examples:
+                all:
+                  summary: Without `country`
+                  value:
+                    total_countries: 50
+                    date: "2026-04-22"
+                    vat_rates:
+                      DE: { country_code: "DE", country_name: "Germany", vat_rate: 19.0 }
+                single:
+                  summary: With `country`
+                  value:
+                    country: "DE"
+                    vat_data: { country_code: "DE", country_name: "Germany", vat_rate: 19.0 }
+            text/plain:
+              schema:
+                type: string
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/CurrencyNotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /api/historical/rates:
+    get:
+      operationId: getHistoricalRates
+      tags: [Historical]
+      summary: Historical exchange rates (Pro)
+      description: |
+        Returns historical rates for a given `date`. The response shape depends
+        on whether `to` is set and whether `amount` is 1.
+
+        **Pro-gated:** returns HTTP 403 on the free tier.
+      parameters:
+        - $ref: '#/components/parameters/Date'
+        - $ref: '#/components/parameters/From'
+        - $ref: '#/components/parameters/To'
+        - $ref: '#/components/parameters/Amount'
+        - $ref: '#/components/parameters/Format'
+        - $ref: '#/components/parameters/Callback'
+      responses:
+        '200':
+          description: |
+            One of four shapes depending on `to` and `amount`:
+            `rate` (to set, amount 1), `result` (to set, amount != 1),
+            `rates` (no to, amount 1), `results` (no to, amount != 1).
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/SingleRate'
+                  - $ref: '#/components/schemas/SingleResult'
+                  - $ref: '#/components/schemas/RatesMap'
+                  - $ref: '#/components/schemas/ResultsMap'
+              examples:
+                rate:
+                  summary: to set, amount == 1
+                  value: { rate: "0.92" }
+                result:
+                  summary: to set, amount != 1
+                  value: { result: "92.00" }
+                rates:
+                  summary: no to, amount == 1
+                  value: { rates: { EUR: "0.92" } }
+                results:
+                  summary: no to, amount != 1
+                  value: { results: { EUR: "92.00" } }
+            text/plain:
+              schema:
+                type: string
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/ProRequired' }
+        '404': { $ref: '#/components/responses/CurrencyNotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /api/historical/timeseries:
+    get:
+      operationId: getTimeSeries
+      tags: [Historical]
+      summary: Historical time series (Pro)
+      description: |
+        Returns daily rates across a date range (max 5-year span).
+
+        **Pro-gated:** returns HTTP 403 on the free tier.
+      parameters:
+        - $ref: '#/components/parameters/StartDate'
+        - $ref: '#/components/parameters/EndDate'
+        - $ref: '#/components/parameters/Base'
+        - $ref: '#/components/parameters/Amount'
+        - $ref: '#/components/parameters/Currencies'
+        - $ref: '#/components/parameters/Format'
+        - $ref: '#/components/parameters/Callback'
+      responses:
+        '200':
+          description: Time-series data keyed by date.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeSeries'
+              examples:
+                default:
+                  value:
+                    amount: 1
+                    base: "USD"
+                    start_date: "2024-01-01"
+                    end_date: "2024-01-07"
+                    total_days: 7
+                    currencies: ["EUR", "GBP"]
+                    data:
+                      "2024-01-01": { EUR: 0.92, GBP: 0.79 }
+                      "2024-01-02": { EUR: 0.921, GBP: 0.788 }
+            text/plain:
+              schema:
+                type: string
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/ProRequired' }
+        '404': { $ref: '#/components/responses/CurrencyNotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+  /api/historical/limits:
+    get:
+      operationId: getHistoricalLimits
+      tags: [Historical]
+      summary: Historical data coverage limits (Pro)
+      description: |
+        Returns the available historical date range per currency.
+
+        **Pro-gated:** returns HTTP 403 on the free tier.
+      parameters:
+        - $ref: '#/components/parameters/Format'
+        - $ref: '#/components/parameters/Callback'
+      responses:
+        '200':
+          description: Per-currency coverage limits.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoricalLimits'
+              examples:
+                default:
+                  value:
+                    total_currencies: 170
+                    data_source: "European Central Bank"
+                    currencies:
+                      USD:
+                        earliest_date: "1999-01-01"
+                        latest_date: "2026-04-22"
+                        total_days: 9000
+                        description: "US Dollar"
+            text/plain:
+              schema:
+                type: string
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/ProRequired' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '503': { $ref: '#/components/responses/ServiceUnavailable' }
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: api_key
+      description: Your UniRate API key, passed as the `api_key` query parameter.
+
+  parameters:
+    From:
+      name: from
+      in: query
+      required: false
+      description: Base currency code (ISO 4217). Uppercased by clients. Defaults to `USD`.
+      schema:
+        type: string
+        default: USD
+        example: USD
+    To:
+      name: to
+      in: query
+      required: false
+      description: Target currency code. If omitted, all rates for the base are returned.
+      schema:
+        type: string
+        example: EUR
+    ToConvert:
+      name: to
+      in: query
+      required: true
+      description: Target currency code for conversion.
+      schema:
+        type: string
+        example: EUR
+    Amount:
+      name: amount
+      in: query
+      required: false
+      description: Amount to convert. Defaults to `1`.
+      schema:
+        type: number
+        default: 1
+        example: 100
+    Base:
+      name: base
+      in: query
+      required: false
+      description: Base currency for the time series. Defaults to `USD`.
+      schema:
+        type: string
+        default: USD
+        example: USD
+    Currencies:
+      name: currencies
+      in: query
+      required: false
+      description: Comma-joined list of target currency codes to include.
+      schema:
+        type: string
+        example: EUR,GBP
+    Country:
+      name: country
+      in: query
+      required: false
+      description: ISO-3166 alpha-2 country code. If omitted, all countries are returned.
+      schema:
+        type: string
+        example: DE
+    Date:
+      name: date
+      in: query
+      required: true
+      description: Historical date in `YYYY-MM-DD` format.
+      schema:
+        type: string
+        format: date
+        example: "2024-01-01"
+    StartDate:
+      name: start_date
+      in: query
+      required: true
+      description: Start date in `YYYY-MM-DD` format.
+      schema:
+        type: string
+        format: date
+        example: "2024-01-01"
+    EndDate:
+      name: end_date
+      in: query
+      required: true
+      description: End date in `YYYY-MM-DD` format. Max 5-year span from `start_date`.
+      schema:
+        type: string
+        format: date
+        example: "2024-01-07"
+    Format:
+      name: format
+      in: query
+      required: false
+      description: Response serialization. `json` (default), `xml`, `csv`, or `tsv`.
+      schema:
+        type: string
+        enum: [json, xml, csv, tsv]
+        default: json
+    Callback:
+      name: callback
+      in: query
+      required: false
+      description: JSONP callback name. Only meaningful when `format=json`.
+      schema:
+        type: string
+
+  schemas:
+    SingleRate:
+      type: object
+      description: Returned when a single `to` currency is requested.
+      properties:
+        rate:
+          type: string
+          description: Exchange rate as a decimal string.
+          example: "0.92"
+      required: [rate]
+    RatesMap:
+      type: object
+      description: Returned when `to` is omitted — a map of currency code to rate string.
+      properties:
+        rates:
+          type: object
+          additionalProperties:
+            type: string
+          example: { EUR: "0.92", GBP: "0.79" }
+      required: [rates]
+    SingleResult:
+      type: object
+      description: Returned for a single conversion.
+      properties:
+        result:
+          type: string
+          description: Converted amount as a decimal string.
+          example: "92.50"
+      required: [result]
+    ResultsMap:
+      type: object
+      description: Returned when `to` is omitted — a map of currency code to converted amount.
+      properties:
+        results:
+          type: object
+          additionalProperties:
+            type: string
+          example: { EUR: "92.50" }
+      required: [results]
+    CurrenciesList:
+      type: object
+      properties:
+        currencies:
+          type: array
+          items:
+            type: string
+          example: ["USD", "EUR", "GBP"]
+      required: [currencies]
+    VatEntry:
+      type: object
+      properties:
+        country_code:
+          type: string
+          example: DE
+        country_name:
+          type: string
+          example: Germany
+        vat_rate:
+          type: number
+          example: 19.0
+      required: [country_code, country_name, vat_rate]
+    VatRatesAll:
+      type: object
+      description: Returned when `country` is omitted.
+      properties:
+        total_countries:
+          type: integer
+          example: 50
+        date:
+          type: string
+          format: date
+          example: "2026-04-22"
+        vat_rates:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/VatEntry'
+      required: [total_countries, date, vat_rates]
+    VatRateSingle:
+      type: object
+      description: Returned when `country` is supplied.
+      properties:
+        country:
+          type: string
+          example: DE
+        vat_data:
+          $ref: '#/components/schemas/VatEntry'
+      required: [country, vat_data]
+    TimeSeries:
+      type: object
+      properties:
+        amount:
+          type: number
+          example: 1
+        base:
+          type: string
+          example: USD
+        start_date:
+          type: string
+          format: date
+          example: "2024-01-01"
+        end_date:
+          type: string
+          format: date
+          example: "2024-01-07"
+        total_days:
+          type: integer
+          example: 7
+        currencies:
+          type: array
+          items:
+            type: string
+          example: ["EUR", "GBP"]
+        data:
+          type: object
+          description: Map of date to a map of currency code to rate.
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: number
+          example:
+            "2024-01-01": { EUR: 0.92, GBP: 0.79 }
+      required: [amount, base, start_date, end_date, total_days, currencies, data]
+    HistoricalLimitEntry:
+      type: object
+      properties:
+        earliest_date:
+          type: string
+          format: date
+          example: "1999-01-01"
+        latest_date:
+          type: string
+          format: date
+          example: "2026-04-22"
+        total_days:
+          type: integer
+          example: 9000
+        description:
+          type: string
+          example: "US Dollar"
+      required: [earliest_date, latest_date, total_days]
+    HistoricalLimits:
+      type: object
+      properties:
+        total_currencies:
+          type: integer
+          example: 170
+        data_source:
+          type: string
+          example: "European Central Bank"
+        currencies:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/HistoricalLimitEntry'
+      required: [total_currencies, currencies]
+    Error:
+      type: object
+      description: Error response body.
+      properties:
+        error:
+          type: string
+          description: Human-readable error message.
+      example: { error: "Missing or invalid API key" }
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example: { error: "Invalid request parameters" }
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example: { error: "Missing or invalid API key" }
+    ProRequired:
+      description: Endpoint requires a Pro subscription (free-tier requests get 403).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example: { error: "Endpoint requires a Pro subscription" }
+    CurrencyNotFound:
+      description: Currency not found or no data available.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example: { error: "Currency not found or no data available" }
+    RateLimited:
+      description: Rate limit exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example: { error: "Rate limit exceeded" }
+    ServiceUnavailable:
+      description: Service temporarily unavailable.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example: { error: "Service unavailable" }

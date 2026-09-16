@@ -1,0 +1,57 @@
+generated: '2026-09-16'
+method: searched
+source: https://github.com/UniRate-API/unirate-mcp and https://www.npmjs.com/package/@unirate/mcp
+name: UniRate MCP Server
+description: >-
+  Official Model Context Protocol server for the UniRate API. Gives MCP-compatible AI
+  assistants (Claude Desktop, Cursor, Continue, Cline) a typed, currency-aware tool surface
+  over UniRate's currency conversion, exchange-rate, and historical-rate endpoints. Ships
+  both a stdio transport and a Streamable HTTP/SSE transport, but the provider hosts no
+  public remote endpoint — operators run the npx package (or the ghcr.io Docker image)
+  themselves, so an agent cannot reach it until a human installs and runs it.
+deployment:
+  mode: local-stdio
+  install: "npx -y @unirate/mcp"
+  package: https://www.npmjs.com/package/@unirate/mcp
+  auth: api-key
+  verified: searched
+  note: >-
+    The package ALSO supports a remote transport — `unirate-mcp --http 3001` exposes
+    `POST /mcp` (Streamable HTTP/SSE) and `GET /healthz` — but the vendor publishes no
+    hosted endpoint URL; a remote deployment is the operator's to stand up (behind their
+    own TLS/reverse proxy). Auth is an api-key passed via the UNIRATE_API_KEY environment
+    variable. Multi-arch Docker images at ghcr.io/unirate-api/unirate-mcp.
+version: 0.2.2
+published: '2026-04-30'
+tools:
+- name: convert
+  description: Convert an amount from one currency to another at the latest rate.
+  inputs:
+    from: {type: string, required: true, note: ISO 4217 code}
+    to: {type: string, required: true, note: ISO 4217 code}
+    amount: {type: number, required: true, note: positive amount in `from`}
+  backs: convert
+- name: latest_rate
+  description: Get current exchange rate(s). Omit `to` to get rates for all currencies.
+  inputs:
+    from: {type: string, required: true}
+    to: {type: string, required: false}
+  backs: getRates
+- name: historical_rate
+  description: Exchange rate in effect on a specific date. Pro plan; coverage back to 1999-01-04.
+  inputs:
+    date: {type: string, required: true, note: 'YYYY-MM-DD'}
+    from: {type: string, required: true}
+    to: {type: string, required: true}
+    amount: {type: number, required: false}
+  backs: getHistoricalRates
+  gated: pro
+- name: list_currencies
+  description: Returns the array of supported currency codes (170+). No parameters.
+  backs: getCurrencies
+errors:
+  note: >-
+    UniRate HTTP failures are mapped to friendly tool errors (400 InvalidRequestError,
+    401 AuthenticationError, 403 ProPlanRequiredError, 404 InvalidCurrencyError,
+    429 RateLimitError, 503 APIError). Tool calls return an object with isError:true rather
+    than throwing, so the model can recover.

@@ -1,0 +1,95 @@
+generated: '2026-09-16'
+method: searched
+source: https://github.com/UniRate-API and public package registries (npmjs, PyPI, proxy.golang.org)
+note: >-
+  UniRate publishes 90+ first-party repositories under the UniRate-API GitHub org — nine
+  core language clients plus dozens of framework/CMS/ELT/AI integrations. Listed below are
+  the nine official core clients, the MCP server, and the CLI. Registry versions read from
+  the registry metadata endpoint where the package is published there; repos not located in
+  a queried public registry carry version:null with a note and the GitHub source URL.
+packages:
+- name: unirate-api
+  language: Python
+  registry: pypi
+  official: true
+  url: https://pypi.org/project/unirate-api/
+  source: https://github.com/UniRate-API/unirate-api-python
+  version: 1.0.0
+  published: '2025-06-21'
+- name: unirate-api
+  language: JavaScript/TypeScript
+  registry: npm
+  official: true
+  url: https://www.npmjs.com/package/unirate-api
+  source: https://github.com/UniRate-API/unirate-api-nodejs
+  version: 1.0.0
+  published: '2025-06-21'
+- name: github.com/UniRate-API/unirate-api-go
+  language: Go
+  registry: go
+  official: true
+  url: https://pkg.go.dev/github.com/UniRate-API/unirate-api-go
+  source: https://github.com/UniRate-API/unirate-api-go
+  version: v0.1.0
+  published: '2026-04-22'
+- name: unirate-api-rust
+  language: Rust
+  registry: null
+  official: true
+  source: https://github.com/UniRate-API/unirate-api-rust
+  version: null
+  note: Official Rust client; not located on crates.io under queried names — install from the GitHub source.
+- name: unirate-api-ruby
+  language: Ruby
+  registry: null
+  official: true
+  source: https://github.com/UniRate-API/unirate-api-ruby
+  version: null
+  note: Official Ruby client; not located on RubyGems under queried names — install from the GitHub source.
+- name: unirate-api-php
+  language: PHP
+  registry: null
+  official: true
+  source: https://github.com/UniRate-API/unirate-api-php
+  version: null
+  note: Official PHP client; not located on Packagist under queried names — install from the GitHub source.
+- name: unirate-api-java
+  language: Java
+  registry: null
+  official: true
+  source: https://github.com/UniRate-API/unirate-api-java
+  version: null
+  note: Official Java client; not located on Maven Central under queried names — build from the GitHub source.
+- name: unirate-api-dotnet
+  language: C#/.NET
+  registry: null
+  official: true
+  source: https://github.com/UniRate-API/unirate-api-dotnet
+  version: null
+  note: Official .NET client; not located on NuGet under queried names — build from the GitHub source.
+- name: unirate-api-swift
+  language: Swift
+  registry: null
+  official: true
+  source: https://github.com/UniRate-API/unirate-api-swift
+  version: null
+  note: Official Swift client (SwiftPM); consumed via the GitHub source URL, no central registry.
+- name: '@unirate/mcp'
+  language: JavaScript/TypeScript
+  registry: npm
+  official: true
+  url: https://www.npmjs.com/package/@unirate/mcp
+  source: https://github.com/UniRate-API/unirate-mcp
+  version: 0.2.2
+  published: '2026-04-30'
+  note: Official Model Context Protocol server (stdio + Streamable HTTP transports).
+- name: unirate-cli
+  language: Go
+  registry: null
+  official: true
+  source: https://github.com/UniRate-API/unirate-cli
+  version: null
+  note: >-
+    Official command-line client. Distributed via a Homebrew tap
+    (github.com/UniRate-API/homebrew-unirate) and a Scoop bucket
+    (github.com/UniRate-API/scoop-unirate); no central-registry metadata endpoint.

@@ -1,0 +1,49 @@
+generated: '2026-09-16'
+method: derived
+source: >-
+  Derived by binding the four @unirate/mcp tools (from unirate-mcp README) to their backing
+  OpenAPI operationIds in openapi/unirateapi-openapi.yaml. Confidence high — the tool
+  names/params map cleanly onto the documented GET operations.
+surfaces:
+  openapi: openapi/unirateapi-openapi.yaml
+  mcp: 'npx -y @unirate/mcp (local-stdio; no hosted endpoint)'
+  gated:
+  - The MCP server calls UniRate with the operator's UNIRATE_API_KEY; historical_rate is Pro-gated.
+crosswalk:
+- tool: convert
+  category: conversion
+  rest: [convert]
+  binding: direct
+  confidence: high
+  note: MCP requires `to`; inherits from/to/amount from the OpenAPI convert operation.
+- tool: latest_rate
+  category: rates
+  rest: [getRates]
+  binding: direct
+  confidence: high
+  note: Omitting `to` returns the full rates map, matching getRates behavior.
+- tool: historical_rate
+  category: historical
+  rest: [getHistoricalRates]
+  binding: direct
+  confidence: high
+  note: Pro-gated on both surfaces (HTTP 403 free tier).
+- tool: list_currencies
+  category: currencies
+  rest: [getCurrencies]
+  binding: direct
+  confidence: high
+mcp_only: []
+rest_only:
+- operationId: getVatRates
+  reason: No MCP tool exposes country VAT rates.
+- operationId: getTimeSeries
+  reason: No MCP tool exposes historical time series.
+- operationId: getHistoricalLimits
+  reason: No MCP tool exposes historical coverage limits.
+coverage:
+  mcp_tools: 4
+  mapped_to_rest: 4
+  mcp_only: 0
+  rest_only: 3
+  openapi_operations: 8

@@ -1,0 +1,44 @@
+generated: '2026-09-16'
+method: derived
+source: Derived from the component schemas in openapi/unirateapi-openapi.yaml.
+note: >-
+  UniRate is a read-only reference-data API with no persistent, id-addressable resources.
+  There are no foreign-key relationships between entities — each endpoint returns a
+  self-contained value or map. The "entities" below are response value objects, not stored
+  records, so relationships are compositional (has-one/has-many by embedding) rather than by id.
+entities:
+- name: Rate
+  description: A single exchange rate as a decimal string (SingleRate.rate).
+- name: RatesMap
+  description: Map of ISO 4217 currency code -> rate string.
+- name: ConversionResult
+  description: A converted amount as a decimal string (SingleResult.result), or a map (ResultsMap).
+- name: CurrenciesList
+  description: Array of supported ISO 4217 currency codes.
+- name: VatEntry
+  description: One country's VAT record (country_code, country_name, vat_rate).
+- name: VatRatesAll
+  description: total_countries + date + map of country_code -> VatEntry.
+- name: TimeSeries
+  description: base/amount/date-range + data map of date -> (currency -> rate).
+- name: HistoricalLimitEntry
+  description: Per-currency coverage window (earliest_date, latest_date, total_days, description).
+- name: HistoricalLimits
+  description: total_currencies + data_source + map of currency -> HistoricalLimitEntry.
+relationships:
+- from: VatRatesAll
+  to: VatEntry
+  type: has_many
+  via: vat_rates (keyed by country_code)
+- from: HistoricalLimits
+  to: HistoricalLimitEntry
+  type: has_many
+  via: currencies (keyed by currency code)
+- from: TimeSeries
+  to: RatesMap
+  type: has_many
+  via: data (keyed by date)
+identifiers:
+  note: >-
+    No opaque/prefixed resource ids. Natural keys only — ISO 4217 currency codes and ISO 3166
+    country codes. Dates are YYYY-MM-DD.

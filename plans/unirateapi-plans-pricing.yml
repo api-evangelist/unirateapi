@@ -1,0 +1,42 @@
+generated: '2026-09-16'
+method: searched
+source: https://unirateapi.com/pricing
+plan_count: 2
+currency: USD
+billing_note: >-
+  Monthly or yearly billing; the yearly interval is advertised as "2 free months". Free
+  tier requires no credit card and is available forever.
+plans:
+- name: Free Tier
+  price: 0
+  currency: USD
+  period: month
+  quota:
+    requests_per_day: 200
+    requests_per_month: 6000
+  limits:
+  - 170+ fiat currencies
+  - 500+ cryptocurrencies
+  - Real-time exchange rates
+  - Currency conversion
+  - EU VAT rates
+  excludes:
+  - Historical data access
+  - Precious metals / commodities
+- name: Pro Tier
+  price: 9
+  currency: USD
+  period: month
+  quota:
+    requests_per_day: 25000
+    requests_per_month: 750000
+    historical_requests_per_day: 1000
+    historical_requests_per_month: 30000
+  limits:
+  - Historical data access (1999-2026)
+  - Time series data
+  - Precious metals API (gold, silver, platinum, palladium)
+  - 19 commodities (Brent, WTI, natural gas, copper, aluminium, wheat, coffee, cocoa & more)
+  - All Free tier features
+  - Priority support
+  - Cancel anytime

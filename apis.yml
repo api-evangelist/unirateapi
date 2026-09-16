@@ -2,9 +2,9 @@ aid: unirateapi
 name: UniRate API
 description: The UniRate API provides current foreign-exchange rates, currency conversion, a list of supported
   currencies, and country VAT rates over a simple REST interface. Current-rate endpoints are available
-  on a free, self-serve tier (get a key at https://unirateapi.com); historical endpoints require a Pro
-  subscription. Open-source client libraries are published for Python, Node/TypeScript, Go, Rust, Ruby,
-  PHP, Java, Swift, .NET and more.
+  on a free, self-serve tier (get a key at https://unirateapi.com); historical, precious-metals and
+  commodities endpoints require a Pro subscription. Open-source client libraries are published for Python,
+  Node/TypeScript, Go, Rust, Ruby, PHP, Java, Swift, .NET and more, plus an official MCP server for AI agents.
 type: Index
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/unirateapi/refs/heads/main/apis.yml
@@ -24,16 +24,71 @@ apis:
   description: 'Current foreign-exchange rates, currency conversion, supported-currency listing, and country
     VAT rates. Authentication is via an api_key query parameter; every request should send an Accept:
     application/json header. Free, self-serve tier available.'
+  image: https://raw.githubusercontent.com/UniRate-API/unirate-mcp/main/assets/logo.png
   humanURL: https://unirateapi.com
   baseURL: https://api.unirateapi.com
   properties:
   - type: OpenAPI
-    url: https://raw.githubusercontent.com/UniRate-API/openapi/main/openapi.yaml
+    url: openapi/unirateapi-openapi.yaml
+  - type: OpenAPI
+    url: openapi/unirateapi-live-swagger.json
+  - type: Overlay
+    url: overlays/unirateapi-openapi-overlay.yaml
+  - type: MCPServer
+    url: mcp/unirateapi-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/unirateapi-tool-crosswalk.yml
+  - type: Plans
+    url: plans/unirateapi-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/unirateapi-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/unirateapi-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/unirateapi-lifecycle.yml
+  - type: Conventions
+    url: conventions/unirateapi-conventions.yml
+  - type: DataModel
+    url: data-model/unirateapi-data-model.yml
+  - type: Conformance
+    url: conformance/unirateapi-conformance.yml
+  - type: Components
+    url: components/unirateapi-components.yml
   - type: Documentation
-    url: https://unirateapi.com
+    url: https://unirateapi.com/apidocs/
+  - type: APIReference
+    url: https://unirateapi.com/apidocs/
 common:
+- type: DomainSecurity
+  url: security/unirateapi-domain-security.yml
+- type: Authentication
+  url: authentication/unirateapi-authentication.yml
+- type: Packages
+  url: packages/unirateapi-packages.yml
+- type: SDKs
+  url: packages/unirateapi-packages.yml
+- type: CLI
+  url: cli/unirateapi-cli.yml
+- type: LLMsTxt
+  url: llms/unirateapi-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
 - type: Website
   url: https://unirateapi.com
+- type: Portal
+  url: https://unirateapi.com
+- type: Pricing
+  url: https://unirateapi.com/pricing
+- type: SignUp
+  url: https://unirateapi.com/register
+- type: Login
+  url: https://unirateapi.com/login
+- type: TermsOfService
+  url: https://unirateapi.com/terms
+- type: PrivacyPolicy
+  url: https://unirateapi.com/privacy
+- type: Blog
+  url: https://unirateapi.com/articles/
 - type: APIsJSON
   url: https://raw.githubusercontent.com/UniRate-API/openapi/main/apis.json
 - type: GitHubOrg
@@ -41,3 +96,8 @@ common:
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-16'
+  status: enriched
+  artifacts_added: 23
+  pass: local-v3

@@ -1,0 +1,16 @@
+generated: '2026-09-16'
+method: derived
+source: openapi/unirateapi-openapi.yaml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - query
+schemes:
+- name: ApiKeyAuth
+  type: apiKey
+  in: query
+  parameter: api_key
+  description: Your UniRate API key, passed as the `api_key` query parameter.
+  sources:
+  - openapi/unirateapi-openapi.yaml

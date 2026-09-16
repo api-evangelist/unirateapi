@@ -1,0 +1,15 @@
+generated: '2026-09-16'
+method: generated
+source: >-
+  Generated from real operationIds in openapi/unirateapi-openapi.yaml plus the conventions,
+  errors, and rate-limit artifacts in this repo.
+api: UniRate API
+skills:
+- name: unirateapi-convert-currency
+  file: skills/unirateapi-convert-currency.md
+  operations: [convert, getCurrencies]
+  description: Convert an amount between two currencies at the current rate.
+- name: unirateapi-historical-timeseries
+  file: skills/unirateapi-historical-timeseries.md
+  operations: [getHistoricalLimits, getTimeSeries, getHistoricalRates]
+  description: Retrieve historical rates and daily time series (Pro).

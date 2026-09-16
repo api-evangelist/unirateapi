@@ -1,0 +1,50 @@
+generated: '2026-09-16'
+method: derived
+source: >-
+  Derived from openapi/unirateapi-openapi.yaml and https://unirateapi.com/pricing, cross-linked
+  to authentication/, errors/, rate-limits/ and lifecycle/.
+auth:
+  style: api-key
+  location: query
+  parameter: api_key
+  note: Every request carries the key as the `api_key` query parameter. No OAuth/OIDC.
+content_negotiation:
+  note: >-
+    Clients MUST send `Accept: application/json`; without it /api/currencies returns an HTML
+    404 page. An optional `format` query parameter selects serialization: json (default),
+    xml, csv, or tsv. When format is not json the body is the raw serialized string.
+  jsonp: Supported via a `callback` query parameter when format=json.
+pagination:
+  style: none
+  note: No paginated collections; rate/currency/VAT responses return complete maps or arrays.
+value_encoding:
+  note: >-
+    Rate and amount values are returned as decimal STRINGS (e.g. "0.92"), not numbers — clients
+    must parse them to a decimal/float. VAT rates and time-series values are returned as numbers.
+versioning:
+  style: spec-version
+  current: 0.1.0
+  note: >-
+    No URL/header API version; info.version in the OpenAPI is 0.1.0 (the live Flasgger spec
+    reports 1.0). Endpoints are namespaced under /api/. See lifecycle/.
+error_envelope:
+  shape: '{"error": "<message>"}'
+  format: custom-json
+  note: Plain JSON error object, NOT RFC 9457 problem+json. See errors/unirateapi-problem-types.yml.
+rate_limit_signaling:
+  note: >-
+    HTTP 429 on exhaustion, reset at midnight UTC; no documented RateLimit-* response headers.
+    See rate-limits/unirateapi-rate-limits.yml.
+request_id_tracing:
+  note: No documented request-id/correlation header.
+idempotency:
+  coverage: na
+  note: >-
+    The entire published surface is read-only HTTP GET (rates, conversion, currencies, VAT,
+    historical, commodities). There are no mutating operations, so replay protection is not
+    applicable — a repeated GET is inherently safe.
+reversibility:
+  grade: na
+  note: >-
+    Read-only API — no write, create, delete, or state-changing operation exists, so there is
+    nothing to reverse. reversibility, idempotency and dry-run are all na for this provider.

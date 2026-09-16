@@ -1,0 +1,30 @@
+generated: '2026-09-16'
+method: searched
+source: >-
+  https://unirateapi.com/pricing, openapi/unirateapi-openapi.yaml, the UniRate-API GitHub org,
+  and live probes of /changelog, /status and status.unirateapi.com.
+versioning:
+  scheme: spec-version
+  current: 0.1.0
+  note: >-
+    The curated OpenAPI declares info.version 0.1.0; the live Flasgger spec reports 1.0. No
+    URL-path or header API versioning; endpoints live under /api/ with no version segment.
+deprecation:
+  policy: none-found
+  sunset_headers: not-documented
+  deprecated_operations: []
+  note: >-
+    No deprecation or Sunset/Deprecation (RFC 8594) policy is published, and no operation in
+    the OpenAPI is marked deprecated. No Deprecation pointer emitted.
+status_page:
+  present: false
+  note: >-
+    Probed /status (404), /changelog (404) and status.unirateapi.com (no DNS/connection). No
+    dedicated status page or dated changelog found; the /articles/ blog exists but is not a
+    changelog. No StatusPage pointer emitted.
+sla:
+  published: false
+  note: No SLA published; free tier is best-effort, Pro advertises "priority support".
+support:
+  free: best-effort
+  pro: priority support (per pricing page)
