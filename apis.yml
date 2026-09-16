@@ -20,22 +20,112 @@ tags:
 - Finance
 - Financial Data
 apis:
-- name: UniRate API
-  description: 'Current foreign-exchange rates, currency conversion, supported-currency listing, and country
-    VAT rates. Authentication is via an api_key query parameter; every request should send an Accept:
-    application/json header. Free, self-serve tier available.'
-  image: https://raw.githubusercontent.com/UniRate-API/unirate-mcp/main/assets/logo.png
+- aid: unirateapi:unirateapi-commodity-api
+  name: UniRate API Commodity API
+  description: Precious metals prices (Gold, Silver, Platinum, Palladium) - Pro subscription required
   humanURL: https://unirateapi.com
   baseURL: https://api.unirateapi.com
+  tags:
+  - Commodity
   properties:
   - type: OpenAPI
-    url: openapi/unirateapi-openapi.yaml
+    url: openapi/unirateapi-commodity-api-openapi.yml
+  - type: ToolCrosswalk
+    url: mcp/unirateapi-tool-crosswalk.yml
+  - type: Plans
+    url: plans/unirateapi-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/unirateapi-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/unirateapi-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/unirateapi-lifecycle.yml
+  - type: Conventions
+    url: conventions/unirateapi-conventions.yml
+  - type: DataModel
+    url: data-model/unirateapi-data-model.yml
+  - type: Conformance
+    url: conformance/unirateapi-conformance.yml
+  - type: Components
+    url: components/unirateapi-components.yml
+  - type: Documentation
+    url: https://unirateapi.com/apidocs/
+  - type: APIReference
+    url: https://unirateapi.com/apidocs/
+- aid: unirateapi:unirateapi-currency-api
+  name: UniRate API Currency API
+  description: Current exchange rates and conversion operations
+  humanURL: https://unirateapi.com
+  baseURL: https://api.unirateapi.com
+  tags:
+  - Currency
+  properties:
   - type: OpenAPI
-    url: openapi/unirateapi-live-swagger.json
-  - type: Overlay
-    url: overlays/unirateapi-openapi-overlay.yaml
-  - type: MCPServer
-    url: mcp/unirateapi-mcp.yml
+    url: openapi/unirateapi-currency-api-openapi.yml
+  - type: ToolCrosswalk
+    url: mcp/unirateapi-tool-crosswalk.yml
+  - type: Plans
+    url: plans/unirateapi-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/unirateapi-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/unirateapi-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/unirateapi-lifecycle.yml
+  - type: Conventions
+    url: conventions/unirateapi-conventions.yml
+  - type: DataModel
+    url: data-model/unirateapi-data-model.yml
+  - type: Conformance
+    url: conformance/unirateapi-conformance.yml
+  - type: Components
+    url: components/unirateapi-components.yml
+  - type: Documentation
+    url: https://unirateapi.com/apidocs/
+  - type: APIReference
+    url: https://unirateapi.com/apidocs/
+- aid: unirateapi:unirateapi-historical-currency-api
+  name: UniRate API Historical Currency API
+  description: Historical exchange rates data (1999-2026)
+  humanURL: https://unirateapi.com
+  baseURL: https://api.unirateapi.com
+  tags:
+  - Historical Currency
+  properties:
+  - type: OpenAPI
+    url: openapi/unirateapi-historical-currency-api-openapi.yml
+  - type: ToolCrosswalk
+    url: mcp/unirateapi-tool-crosswalk.yml
+  - type: Plans
+    url: plans/unirateapi-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/unirateapi-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/unirateapi-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/unirateapi-lifecycle.yml
+  - type: Conventions
+    url: conventions/unirateapi-conventions.yml
+  - type: DataModel
+    url: data-model/unirateapi-data-model.yml
+  - type: Conformance
+    url: conformance/unirateapi-conformance.yml
+  - type: Components
+    url: components/unirateapi-components.yml
+  - type: Documentation
+    url: https://unirateapi.com/apidocs/
+  - type: APIReference
+    url: https://unirateapi.com/apidocs/
+- aid: unirateapi:unirateapi-vat-rates-api
+  name: UniRate API VAT Rates API
+  description: The VAT Rates API from UniRate API — 1 operation(s) for vat rates.
+  humanURL: https://unirateapi.com
+  baseURL: https://api.unirateapi.com
+  tags:
+  - VAT Rates
+  properties:
+  - type: OpenAPI
+    url: openapi/unirateapi-vat-rates-api-openapi.yml
   - type: ToolCrosswalk
     url: mcp/unirateapi-tool-crosswalk.yml
   - type: Plans
@@ -59,6 +149,10 @@ apis:
   - type: APIReference
     url: https://unirateapi.com/apidocs/
 common:
+- type: Overlay
+  url: overlays/unirateapi-openapi-overlay.yaml
+- type: MCPServer
+  url: mcp/unirateapi-mcp.yml
 - type: DomainSecurity
   url: security/unirateapi-domain-security.yml
 - type: Authentication
