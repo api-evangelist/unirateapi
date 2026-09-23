@@ -1,0 +1,81 @@
+openapi: 3.2.0
+info:
+  title: UniRate VAT Rates API
+  description: API for currency conversion and exchange rates with historical data
+  version: '1.0'
+servers:
+- url: https://api.unirateapi.com/
+tags:
+- name: VAT Rates
+paths:
+  /api/vat/rates:
+    get:
+      description: Get VAT rates for all countries or a specific country
+      responses:
+        '200':
+          description: VAT rates retrieved successfully.
+          content:
+            all_countries:
+              example:
+                date: '2024-01-15'
+                total_countries: 29
+                vat_rates:
+                  DE:
+                    country_code: DE
+                    country_name: Germany
+                    vat_rate: 19.0
+                  FR:
+                    country_code: FR
+                    country_name: France
+                    vat_rate: 20.0
+                  ES:
+                    country_code: ES
+                    country_name: Spain
+                    vat_rate: 21.0
+            specific_country:
+              example:
+                country: DE
+                vat_data:
+                  country_code: DE
+                  country_name: Germany
+                  vat_rate: 19.0
+        '400':
+          description: Invalid request parameters
+        '401':
+          description: Missing or invalid API key
+        '404':
+          description: No VAT rates found for specified country
+        '429':
+          description: Rate limit exceeded (1800 requests per hour)
+        '503':
+          description: VAT rates service unavailable
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication
+        schema:
+          type: string
+      - name: country
+        in: query
+        description: Two-letter country code (e.g., DE, FR) for specific country rates (optional)
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      tags:
+      - VAT Rates

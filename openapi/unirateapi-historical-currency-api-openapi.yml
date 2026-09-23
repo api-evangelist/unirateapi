@@ -1,0 +1,260 @@
+openapi: 3.2.0
+info:
+  title: UniRate Historical Currency API
+  description: API for currency conversion and exchange rates with historical data
+  version: '1.0'
+servers:
+- url: https://api.unirateapi.com/
+tags:
+- name: Historical Currency
+  description: Historical exchange rates data (1999-2026)
+paths:
+  /api/historical/rates:
+    get:
+      summary: Get historical exchange rates for a specific date
+      description: Get historical exchange rates for a specific date with optional amount conversion
+      responses:
+        '200':
+          description: Historical exchange rates retrieved successfully.
+          content:
+            single_conversion:
+              example:
+                date: '2022-01-01'
+                amount: 100
+                base: USD
+                to: EUR
+                rate: 0.88
+                result: 88.0
+            all_currencies:
+              example:
+                date: '2022-01-01'
+                amount: 1
+                base: USD
+                rates:
+                  EUR: 0.88
+                  GBP: 0.74
+                results:
+                  EUR: 0.88
+                  GBP: 0.74
+        '400':
+          description: Invalid date format or missing date
+        '401':
+          description: Missing or invalid API key
+        '404':
+          description: No data available for the given date or currency
+        '503':
+          description: Service unavailable
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication
+        schema:
+          type: string
+      - name: date
+        in: query
+        required: true
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - name: amount
+        in: query
+        description: Amount to convert (optional)
+        schema:
+          type: number
+          default: 1
+      - name: from
+        in: query
+        description: Base currency code (optional)
+        schema:
+          type: string
+          default: USD
+      - name: to
+        in: query
+        description: The currency to convert to (optional). If not specified, returns rates for all currencies.
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      tags:
+      - Historical Currency
+  /api/historical/timeseries:
+    get:
+      description: Get time series data for a date range with optional amount conversion (max 5 years)
+      responses:
+        '200':
+          description: Time series data retrieved successfully.
+          content:
+            rates_only:
+              example:
+                start_date: '2023-01-01'
+                end_date: '2023-01-03'
+                amount: 1
+                base: USD
+                currencies:
+                - EUR
+                - GBP
+                data:
+                  '2023-01-01':
+                    EUR: 0.85
+                    GBP: 0.75
+                  '2023-01-02':
+                    EUR: 0.86
+                    GBP: 0.76
+                  '2023-01-03':
+                    EUR: 0.84
+                    GBP: 0.74
+                total_days: 3
+            with_conversions:
+              example:
+                start_date: '2023-01-01'
+                end_date: '2023-01-03'
+                amount: 100
+                base: USD
+                currencies:
+                - EUR
+                - GBP
+                data:
+                  '2023-01-01':
+                    EUR: 85.0
+                    GBP: 75.0
+                  '2023-01-02':
+                    EUR: 86.0
+                    GBP: 76.0
+                  '2023-01-03':
+                    EUR: 84.0
+                    GBP: 74.0
+                total_days: 3
+        '400':
+          description: Missing parameters, invalid date format, or date range exceeds 5 years
+        '401':
+          description: Missing or invalid API key
+        '429':
+          description: Rate limit exceeded (50 requests per hour)
+        '500':
+          description: Unable to retrieve time series data
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication
+        schema:
+          type: string
+      - name: start_date
+        in: query
+        required: true
+        description: Start date in YYYY-MM-DD format
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        required: true
+        description: End date in YYYY-MM-DD format
+        schema:
+          type: string
+      - name: amount
+        in: query
+        description: Amount to convert (optional)
+        schema:
+          type: number
+          default: 1
+      - name: base
+        in: query
+        description: The base currency for the time series data (optional). Defaults to USD.
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      - name: currencies
+        in: query
+        description: Comma-separated list of currency codes to retrieve (optional)
+        schema:
+          type: string
+      tags:
+      - Historical Currency
+  /api/historical/limits:
+    get:
+      description: Get information about available historical data limits per currency
+      responses:
+        '200':
+          description: Historical data limits retrieved successfully.
+          content:
+            per_currency_limits:
+              example:
+                currencies:
+                  EUR:
+                    earliest_date: '1999-01-01'
+                    latest_date: '2025-12-31'
+                    total_days: 9664
+                    description: On EUR you can get it from 1999-01-01 until 2025-12-31
+                  RON:
+                    earliest_date: '2009-01-01'
+                    latest_date: '2025-06-17'
+                    total_days: 5987
+                    description: On RON you can get it from 2009-01-01 until 2025-06-17
+                  GBP:
+                    earliest_date: '1999-01-01'
+                    latest_date: '2025-12-31'
+                    total_days: 9664
+                    description: On GBP you can get it from 1999-01-01 until 2025-12-31
+                total_currencies: 170
+                data_source: Historical exchange rates cache
+        '401':
+          description: Missing or invalid API key
+        '429':
+          description: Rate limit exceeded (50 requests per hour)
+        '503':
+          description: Historical data limits not available
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      tags:
+      - Historical Currency

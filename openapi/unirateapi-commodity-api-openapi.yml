@@ -1,0 +1,519 @@
+openapi: 3.2.0
+info:
+  title: UniRate Commodity API
+  description: API for currency conversion and exchange rates with historical data
+  version: '1.0'
+servers:
+- url: https://api.unirateapi.com/
+tags:
+- name: Commodity
+  description: Precious metals prices (Gold, Silver, Platinum, Palladium) - Pro subscription required
+paths:
+  /api/commodities/symbols:
+    get:
+      description: 'List all available commodity symbols with name and unit (Pro subscription required). 19 commodities: gold, silver, platinum, palladium (troy oz); WTI and Brent crude (barrel), US Henry Hub natural gas (MMBtu); copper, aluminium, zinc, nickel, lead, tin (tonne); wheat, corn (tonne), coffee, sugar, cocoa, cotton (kg). Precious metals are blended live from LBMA and market feeds; energy, base metals and agriculturals are World Bank reference prices (CC BY 4.0, attribution: The World Bank).'
+      responses:
+        '200':
+          description: A list of available commodity symbols with metadata.
+          content:
+            commodities:
+              example:
+                symbols:
+                  XAU:
+                    name: Gold
+                    unit: troy ounce
+                  XAG:
+                    name: Silver
+                    unit: troy ounce
+                  XPT:
+                    name: Platinum
+                    unit: troy ounce
+                  XPD:
+                    name: Palladium
+                    unit: troy ounce
+                  WTI:
+                    name: Crude Oil (WTI)
+                    unit: barrel
+                  BRENT:
+                    name: Crude Oil (Brent)
+                    unit: barrel
+                  NATGAS:
+                    name: Natural Gas (US Henry Hub)
+                    unit: MMBtu
+                  XCU:
+                    name: Copper
+                    unit: tonne
+                  ALUM:
+                    name: Aluminum
+                    unit: tonne
+                  ZINC:
+                    name: Zinc
+                    unit: tonne
+                  NICKEL:
+                    name: Nickel
+                    unit: tonne
+                  LEAD:
+                    name: Lead
+                    unit: tonne
+                  TIN:
+                    name: Tin
+                    unit: tonne
+                  WHEAT:
+                    name: Wheat (US HRW)
+                    unit: tonne
+                  CORN:
+                    name: Maize (Corn)
+                    unit: tonne
+                  COFFEE:
+                    name: Coffee (Arabica)
+                    unit: kg
+                  SUGAR:
+                    name: Sugar (World)
+                    unit: kg
+                  COCOA:
+                    name: Cocoa
+                    unit: kg
+                  COTTON:
+                    name: Cotton (A Index)
+                    unit: kg
+                count: 19
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: Pro subscription required
+        '503':
+          description: No commodity rates available
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication (Pro tier required)
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      tags:
+      - Commodity
+  /api/commodities/rates:
+    get:
+      description: 'Get live commodity prices with optional amount conversion (Pro subscription required). 19 commodities: gold, silver, platinum, palladium (troy oz); WTI and Brent crude (barrel), US Henry Hub natural gas (MMBtu); copper, aluminium, zinc, nickel, lead, tin (tonne); wheat, corn (tonne), coffee, sugar, cocoa, cotton (kg). Precious metals are blended live from LBMA and market feeds; energy, base metals and agriculturals are World Bank reference prices (CC BY 4.0, attribution: The World Bank).'
+      responses:
+        '200':
+          description: Commodity prices retrieved successfully.
+          content:
+            single_conversion:
+              example:
+                amount: 1
+                base: USD
+                to: XAU
+                rate: 0.000217
+                result: 0.000217
+            energy_conversion:
+              example:
+                amount: 10000
+                base: USD
+                to: BRENT
+                rate: 0.012
+                result: 119.9
+            all_commodities:
+              example:
+                amount: 1
+                base: USD
+                rates:
+                  XAU: 0.000217
+                  XAG: 0.0146
+                  XPT: 0.000537
+                  XPD: 0.000746
+                  WTI: 0.0126
+                  BRENT: 0.012
+                  NATGAS: 0.346
+                  XCU: 7.38e-05
+                  ALUM: 0.000316
+                  ZINC: 0.000278
+                  NICKEL: 6.01e-05
+                  LEAD: 0.000543
+                  TIN: 1.89e-05
+                  WHEAT: 0.00323
+                  CORN: 0.00469
+                  COFFEE: 0.126
+                  SUGAR: 2.94
+                  COCOA: 0.178
+                  COTTON: 0.51
+                  USD: 1.0
+                results:
+                  XAU: 0.000217
+                  XAG: 0.0146
+                  XPT: 0.000537
+                  XPD: 0.000746
+                  WTI: 0.0126
+                  BRENT: 0.012
+                  NATGAS: 0.346
+                  XCU: 7.38e-05
+                  ALUM: 0.000316
+                  ZINC: 0.000278
+                  NICKEL: 6.01e-05
+                  LEAD: 0.000543
+                  TIN: 1.89e-05
+                  WHEAT: 0.00323
+                  CORN: 0.00469
+                  COFFEE: 0.126
+                  SUGAR: 2.94
+                  COCOA: 0.178
+                  COTTON: 0.51
+                  USD: 1.0
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: Pro subscription required
+        '404':
+          description: Symbol not found
+        '503':
+          description: No commodity rates available
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication (Pro tier required)
+        schema:
+          type: string
+      - name: amount
+        in: query
+        description: Amount to convert (optional)
+        schema:
+          type: number
+          default: 1
+      - name: from
+        in: query
+        description: Base symbol (commodity code such as XAU, BRENT, XCU, WHEAT — or USD). Defaults to USD.
+        schema:
+          type: string
+          default: USD
+      - name: to
+        in: query
+        description: The symbol to convert to (optional). If not specified, returns rates for all commodities.
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      tags:
+      - Commodity
+  /api/commodities/convert:
+    get:
+      description: 'Convert between commodities and currencies (Pro subscription required). 19 commodities: gold, silver, platinum, palladium (troy oz); WTI and Brent crude (barrel), US Henry Hub natural gas (MMBtu); copper, aluminium, zinc, nickel, lead, tin (tonne); wheat, corn (tonne), coffee, sugar, cocoa, cotton (kg). Precious metals are blended live from LBMA and market feeds; energy, base metals and agriculturals are World Bank reference prices (CC BY 4.0, attribution: The World Bank).'
+      responses:
+        '200':
+          description: Conversion completed successfully.
+          content:
+            single_conversion:
+              example:
+                amount: 2000
+                from: USD
+                to: XAU
+                result: 1.0
+            commodity_to_currency:
+              example:
+                amount: 1
+                from: XAU
+                to: EUR
+                result: 1850.5
+            all_commodities:
+              example:
+                amount: 1000
+                from: USD
+                results:
+                  XAU: 0.217
+                  XAG: 14.6
+                  XPT: 0.537
+                  XPD: 0.746
+                  WTI: 12.6
+                  BRENT: 12.0
+                  NATGAS: 346.0
+                  XCU: 0.0738
+                  ALUM: 0.316
+                  ZINC: 0.278
+                  NICKEL: 0.0601
+                  LEAD: 0.543
+                  TIN: 0.0189
+                  WHEAT: 3.23
+                  CORN: 4.69
+                  COFFEE: 126.4
+                  SUGAR: 2941.2
+                  COCOA: 178.3
+                  COTTON: 510.2
+                  USD: 1000.0
+            commodity_to_commodity:
+              example:
+                amount: 1
+                from: XAU
+                to: XCU
+                result: 0.341
+        '400':
+          description: Invalid amount parameter or conversion failed
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: Pro subscription required
+        '404':
+          description: Symbol not found
+        '503':
+          description: No commodity rates available
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication (Pro tier required)
+        schema:
+          type: string
+      - name: amount
+        in: query
+        description: Amount to convert (optional)
+        schema:
+          type: number
+          default: 1
+      - name: from
+        in: query
+        description: Source symbol (commodity code like XAU, WTI, XCU, COFFEE — or a currency code like USD)
+        schema:
+          type: string
+          default: USD
+      - name: to
+        in: query
+        description: Target symbol (optional). If not specified, converts to all commodities.
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      tags:
+      - Commodity
+  /api/commodities/historical/rates:
+    get:
+      summary: Get historical commodity prices for a specific date
+      description: 'Get historical commodity prices for a specific date with optional amount conversion (Pro subscription required). Precious metals history back to 1968 (gold/silver) and 1990 (platinum/palladium); energy, base-metal and agricultural history accrues daily from 2026-08. 19 commodities: gold, silver, platinum, palladium (troy oz); WTI and Brent crude (barrel), US Henry Hub natural gas (MMBtu); copper, aluminium, zinc, nickel, lead, tin (tonne); wheat, corn (tonne), coffee, sugar, cocoa, cotton (kg). Precious metals are blended live from LBMA and market feeds; energy, base metals and agriculturals are World Bank reference prices (CC BY 4.0, attribution: The World Bank).'
+      responses:
+        '200':
+          description: Historical commodity prices retrieved successfully.
+          content:
+            single_commodity:
+              example:
+                date: '2023-01-01'
+                amount: 1
+                base: USD
+                to: XAU
+                rate: 0.00055
+                result: 0.00055
+            all_commodities:
+              example:
+                date: '2023-01-01'
+                amount: 1
+                base: USD
+                rates:
+                  XAU: 0.00055
+                  XAG: 0.042
+                  XPT: 0.00095
+                  XPD: 0.00056
+                results:
+                  XAU: 0.00055
+                  XAG: 0.042
+                  XPT: 0.00095
+                  XPD: 0.00056
+        '400':
+          description: Invalid date format or missing date
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: Pro subscription required
+        '404':
+          description: No data available for the given date or symbol
+        '503':
+          description: Service unavailable
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication (Pro tier required)
+        schema:
+          type: string
+      - name: date
+        in: query
+        required: true
+        description: Date in YYYY-MM-DD format
+        schema:
+          type: string
+      - name: amount
+        in: query
+        description: Amount to convert (optional)
+        schema:
+          type: number
+          default: 1
+      - name: from
+        in: query
+        description: Base symbol (commodity code such as XAU, BRENT, XCU, WHEAT — or USD). Defaults to USD.
+        schema:
+          type: string
+          default: USD
+      - name: to
+        in: query
+        description: The symbol to convert to (optional). If not specified, returns prices for all commodities.
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      tags:
+      - Commodity
+  /api/commodities/historical/timeseries:
+    get:
+      description: 'Get commodity time series data for a date range with optional amount conversion (max 5 years, Pro subscription required). Precious metals history back to 1968 (gold/silver) and 1990 (platinum/palladium); energy, base-metal and agricultural history accrues daily from 2026-08. 19 commodities: gold, silver, platinum, palladium (troy oz); WTI and Brent crude (barrel), US Henry Hub natural gas (MMBtu); copper, aluminium, zinc, nickel, lead, tin (tonne); wheat, corn (tonne), coffee, sugar, cocoa, cotton (kg). Precious metals are blended live from LBMA and market feeds; energy, base metals and agriculturals are World Bank reference prices (CC BY 4.0, attribution: The World Bank).'
+      responses:
+        '200':
+          description: Time series data retrieved successfully.
+          content:
+            prices_only:
+              example:
+                start_date: '2023-01-01'
+                end_date: '2023-01-03'
+                amount: 1
+                symbols:
+                - XAU
+                - XAG
+                data:
+                  '2023-01-01':
+                    XAU: 1824.5
+                    XAG: 23.8
+                  '2023-01-02':
+                    XAU: 1830.25
+                    XAG: 24.1
+                  '2023-01-03':
+                    XAU: 1815.0
+                    XAG: 23.5
+                total_days: 3
+            with_amount:
+              example:
+                start_date: '2023-01-01'
+                end_date: '2023-01-03'
+                amount: 10
+                symbols:
+                - XAU
+                - XAG
+                data:
+                  '2023-01-01':
+                    XAU: 18245.0
+                    XAG: 238.0
+                  '2023-01-02':
+                    XAU: 18302.5
+                    XAG: 241.0
+                  '2023-01-03':
+                    XAU: 18150.0
+                    XAG: 235.0
+                total_days: 3
+        '400':
+          description: Missing parameters, invalid date format, or date range exceeds 5 years
+        '401':
+          description: Missing or invalid API key
+        '403':
+          description: Pro subscription required
+        '500':
+          description: Unable to retrieve time series data
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication (Pro tier required)
+        schema:
+          type: string
+      - name: start_date
+        in: query
+        required: true
+        description: Start date in YYYY-MM-DD format
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        required: true
+        description: End date in YYYY-MM-DD format
+        schema:
+          type: string
+      - name: amount
+        in: query
+        description: Amount to multiply prices by (optional)
+        schema:
+          type: number
+          default: 1
+      - name: symbols
+        in: query
+        description: Comma-separated list of commodity symbols to retrieve (optional). e.g., XAU,XAG or BRENT,WTI,NATGAS. Defaults to all 19.
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      tags:
+      - Commodity

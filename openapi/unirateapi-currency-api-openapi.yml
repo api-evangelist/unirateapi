@@ -1,0 +1,199 @@
+openapi: 3.2.0
+info:
+  title: UniRate Currency API
+  description: API for currency conversion and exchange rates with historical data
+  version: '1.0'
+servers:
+- url: https://api.unirateapi.com/
+tags:
+- name: Currency
+  description: Current exchange rates and conversion operations
+paths:
+  /api/rates:
+    get:
+      description: Get exchange rates between currencies with optional amount conversion
+      responses:
+        '200':
+          description: Exchange rates retrieved successfully.
+          content:
+            single_conversion:
+              example:
+                amount: 100
+                base: USD
+                to: EUR
+                rate: 0.85
+                result: 85.0
+            all_conversions:
+              example:
+                amount: 100
+                base: USD
+                rates:
+                  EUR: 0.85
+                  GBP: 0.75
+                  JPY: 110.25
+                results:
+                  EUR: 85.0
+                  GBP: 75.0
+                  JPY: 11025.0
+        '401':
+          description: Missing or invalid API key
+        '404':
+          description: Currency not found
+        '503':
+          description: No exchange rates available
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication
+        schema:
+          type: string
+      - name: amount
+        in: query
+        description: Amount to convert (optional)
+        schema:
+          type: number
+          default: 1
+      - name: from
+        in: query
+        description: Base currency code (optional)
+        schema:
+          type: string
+          default: USD
+      - name: to
+        in: query
+        description: The currency to convert to (optional). If not specified, returns rates for all currencies.
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      tags:
+      - Currency
+  /api/convert:
+    get:
+      description: Convert amount between currencies
+      responses:
+        '200':
+          description: Currency converted successfully.
+          content:
+            single_conversion:
+              example:
+                amount: 100.0
+                from: USD
+                to: EUR
+                result: 85.0
+            all_conversions:
+              example:
+                amount: 100.0
+                from: USD
+                results:
+                  EUR: 85.0
+                  GBP: 75.0
+        '400':
+          description: Invalid request parameters
+        '401':
+          description: Missing or invalid API key
+        '404':
+          description: Currency not found
+        '503':
+          description: No exchange rates available
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication
+        schema:
+          type: string
+      - name: amount
+        in: query
+        description: Amount to convert (optional)
+        schema:
+          type: number
+          default: 1
+      - name: from
+        in: query
+        description: Base currency code (optional)
+        schema:
+          type: string
+          default: USD
+      - name: to
+        in: query
+        description: The currency to convert to.
+        required: true
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      tags:
+      - Currency
+  /api/currencies:
+    get:
+      description: List all available currencies
+      responses:
+        '200':
+          description: A list of available currencies.
+          content:
+            currencies:
+              example:
+                currencies:
+                - USD
+                - EUR
+                - GBP
+                count: 3
+        '401':
+          description: Missing or invalid API key
+        '503':
+          description: No exchange rates available
+      parameters:
+      - name: api_key
+        in: query
+        required: true
+        description: API key for authentication
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the response (optional).
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          - csv
+          - tsv
+          default: json
+      - name: callback
+        in: query
+        description: The name of the JSONP callback function (optional). Only used when format is 'json'. Must be alphanumeric with underscores.
+        schema:
+          type: string
+      tags:
+      - Currency

@@ -1,0 +1,36 @@
+{
+  "provider": "unirateapi",
+  "sources": [
+    "_original/unirateapi-live-swagger.json"
+  ],
+  "outputs": [
+    "unirateapi-commodity-api-openapi.yml",
+    "unirateapi-currency-api-openapi.yml",
+    "unirateapi-historical-currency-api-openapi.yml",
+    "unirateapi-vat-rates-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 4 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "unirateapi-live-swagger.json: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "unirateapi-live-swagger.json: declared missing tag: VAT Rates",
+    "superseded outputs removed: unirateapi-currencies-api-openapi.yml, unirateapi-historical-api-openapi.yml, unirateapi-rates-api-openapi.yml, unirateapi-vat-api-openapi.yml",
+    "apis.yml register: written (+0 apis, 4 total)"
+  ],
+  "skipped": [
+    "_original/unirateapi-openapi.yaml: archived document superseded by a larger archived document",
+    "unirateapi-commodity-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "unirateapi-currencies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "unirateapi-currency-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "unirateapi-historical-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "unirateapi-historical-currency-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "unirateapi-rates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "unirateapi-vat-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "unirateapi-vat-rates-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}
