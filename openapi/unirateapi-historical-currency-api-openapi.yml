@@ -92,6 +92,8 @@ paths:
           type: string
       tags:
       - Historical Currency
+      operationId: getApiHistoricalRates
+      x-operation-id-source: derived
   /api/historical/timeseries:
     get:
       description: Get time series data for a date range with optional amount conversion (max 5 years)
@@ -200,6 +202,10 @@ paths:
           type: string
       tags:
       - Historical Currency
+      summary: Get api historical timeseries
+      x-summary-source: derived
+      operationId: getApiHistoricalTimeseries
+      x-operation-id-source: derived
   /api/historical/limits:
     get:
       description: Get information about available historical data limits per currency
@@ -258,3 +264,7 @@ paths:
           type: string
       tags:
       - Historical Currency
+      summary: Get api historical limits
+      x-summary-source: derived
+      operationId: getApiHistoricalLimits
+      x-operation-id-source: derived

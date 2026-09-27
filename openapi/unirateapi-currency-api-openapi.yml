@@ -83,6 +83,10 @@ paths:
           type: string
       tags:
       - Currency
+      summary: Get api rates
+      x-summary-source: derived
+      operationId: getApiRates
+      x-operation-id-source: derived
   /api/convert:
     get:
       description: Convert amount between currencies
@@ -154,6 +158,10 @@ paths:
           type: string
       tags:
       - Currency
+      summary: Get api convert
+      x-summary-source: derived
+      operationId: getApiConvert
+      x-operation-id-source: derived
   /api/currencies:
     get:
       description: List all available currencies
@@ -197,3 +205,7 @@ paths:
           type: string
       tags:
       - Currency
+      summary: Get api currencies
+      x-summary-source: derived
+      operationId: getApiCurrencies
+      x-operation-id-source: derived

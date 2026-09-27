@@ -108,6 +108,10 @@ paths:
           type: string
       tags:
       - Commodity
+      summary: Get api commodities symbols
+      x-summary-source: derived
+      operationId: getApiCommoditiesSymbols
+      x-operation-id-source: derived
   /api/commodities/rates:
     get:
       description: 'Get live commodity prices with optional amount conversion (Pro subscription required). 19 commodities: gold, silver, platinum, palladium (troy oz); WTI and Brent crude (barrel), US Henry Hub natural gas (MMBtu); copper, aluminium, zinc, nickel, lead, tin (tonne); wheat, corn (tonne), coffee, sugar, cocoa, cotton (kg). Precious metals are blended live from LBMA and market feeds; energy, base metals and agriculturals are World Bank reference prices (CC BY 4.0, attribution: The World Bank).'
@@ -225,6 +229,10 @@ paths:
           type: string
       tags:
       - Commodity
+      summary: Get api commodities rates
+      x-summary-source: derived
+      operationId: getApiCommoditiesRates
+      x-operation-id-source: derived
   /api/commodities/convert:
     get:
       description: 'Convert between commodities and currencies (Pro subscription required). 19 commodities: gold, silver, platinum, palladium (troy oz); WTI and Brent crude (barrel), US Henry Hub natural gas (MMBtu); copper, aluminium, zinc, nickel, lead, tin (tonne); wheat, corn (tonne), coffee, sugar, cocoa, cotton (kg). Precious metals are blended live from LBMA and market feeds; energy, base metals and agriculturals are World Bank reference prices (CC BY 4.0, attribution: The World Bank).'
@@ -327,6 +335,10 @@ paths:
           type: string
       tags:
       - Commodity
+      summary: Get api commodities convert
+      x-summary-source: derived
+      operationId: getApiCommoditiesConvert
+      x-operation-id-source: derived
   /api/commodities/historical/rates:
     get:
       summary: Get historical commodity prices for a specific date
@@ -416,6 +428,8 @@ paths:
           type: string
       tags:
       - Commodity
+      operationId: getApiCommoditiesHistoricalRates
+      x-operation-id-source: derived
   /api/commodities/historical/timeseries:
     get:
       description: 'Get commodity time series data for a date range with optional amount conversion (max 5 years, Pro subscription required). Precious metals history back to 1968 (gold/silver) and 1990 (platinum/palladium); energy, base-metal and agricultural history accrues daily from 2026-08. 19 commodities: gold, silver, platinum, palladium (troy oz); WTI and Brent crude (barrel), US Henry Hub natural gas (MMBtu); copper, aluminium, zinc, nickel, lead, tin (tonne); wheat, corn (tonne), coffee, sugar, cocoa, cotton (kg). Precious metals are blended live from LBMA and market feeds; energy, base metals and agriculturals are World Bank reference prices (CC BY 4.0, attribution: The World Bank).'
@@ -517,3 +531,7 @@ paths:
           type: string
       tags:
       - Commodity
+      summary: Get api commodities historical timeseries
+      x-summary-source: derived
+      operationId: getApiCommoditiesHistoricalTimeseries
+      x-operation-id-source: derived

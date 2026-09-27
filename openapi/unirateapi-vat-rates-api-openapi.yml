@@ -79,3 +79,7 @@ paths:
           type: string
       tags:
       - VAT Rates
+      summary: Get api vat rates
+      x-summary-source: derived
+      operationId: getApiVatRates
+      x-operation-id-source: derived
