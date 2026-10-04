@@ -149,6 +149,9 @@ apis:
   - type: APIReference
     url: https://unirateapi.com/apidocs/
 common:
+- type: CapabilityMap
+  url: capabilities/unirateapi-capability-edges.yml
+  name: UniRate API Business Capability Map
 - type: Overlay
   url: overlays/unirateapi-openapi-overlay.yaml
 - type: MCPServer

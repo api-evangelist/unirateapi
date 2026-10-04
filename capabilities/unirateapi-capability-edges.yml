@@ -1,0 +1,25 @@
+slug: unirateapi
+provider: UniRate API
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: VAT Rates
+  spec_file: unirateapi-vat-rates-api-openapi.yml
+  capability_id: BC-220.20
+  capability_id_l1: BC-220
+  capability_name: Indirect Tax Management
+  confidence: 0.78
+  evidence: 'GET /api/vat/rates  getApiVatRates — vendor: ''country VAT rates over a simple REST interface'''
+  reason: Provides per-country VAT rates, which is the rate-determination input to indirect tax (VAT/GST/sales
+    tax) calculation. Slight discount because it supplies rates rather than performing the tax determination
+    itself.
