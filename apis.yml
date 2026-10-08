@@ -149,6 +149,10 @@ apis:
   - type: APIReference
     url: https://unirateapi.com/apidocs/
 common:
+- type: Plans
+  url: plans/unirateapi-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/unirateapi-rate-limits.yml
 - type: CapabilityMap
   url: capabilities/unirateapi-capability-edges.yml
   name: UniRate API Business Capability Map
