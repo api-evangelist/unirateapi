@@ -56,3 +56,16 @@
     builder: Pipedream repo (component)
   status: not-a-workflow
   arazzo: null
+- slug: unirateapi-meltano-meltano-hub
+  label: Meltano (meltano-hub)
+  partner: meltano
+  partner_name: Meltano (meltano-hub)
+  category: data integration
+  type: marketplace
+  marketplace: meltano-hub
+  channel: partner-built
+  evidence: https://hub.meltano.com/extractors/tap-unirate--unirate-api
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
