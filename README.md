@@ -64,4 +64,118 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-The UniRate API provides current foreign-exchange rates, currency conversion, a list of supported currencies, and country VAT rates over a simple REST interface. Current-rate endpoints are available on a free, self-serve tier (get a key at https://unirateapi.com); historical endpoints require a Pro subscription. Open-source client libraries are published for Python, Node/TypeScript, Go, Rust, Ruby, PHP, Java, Swift, .NET and more.
+The UniRate API provides current foreign-exchange rates, currency conversion, a list of supported currencies, and country VAT rates over a simple REST interface. Current-rate endpoints are available on a free, self-serve tier (get a key at https://unirateapi.com); historical, precious-metals and commodities endpoints require a Pro subscription. Open-source client libraries are published for Python, Node/TypeScript, Go, Rust, Ruby, PHP, Java, Swift, .NET and more, plus an official MCP server for AI agents.
+
+**Areas:** Currency · Exchange Rates · Foreign Exchange · Currency Conversion · VAT · Finance · Financial Data
+
+## UniRate API on APIs.io
+
+Everything profiled for UniRate API is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/unirateapi/](https://apis.io/providers/unirateapi/)** — or go straight to one of the APIs or properties below.
+
+### APIs (4)
+
+- [UniRate API Commodity API](https://apis.io/apis/unirateapi/unirateapi-commodity-api/) — Precious metals prices (Gold, Silver, Platinum, Palladium) - Pro subscription required
+- [UniRate API Currency API](https://apis.io/apis/unirateapi/unirateapi-currency-api/) — Current exchange rates and conversion operations
+- [UniRate API Historical Currency API](https://apis.io/apis/unirateapi/unirateapi-historical-currency-api/) — Historical exchange rates data (1999-2026)
+- [UniRate API VAT Rates API](https://apis.io/apis/unirateapi/unirateapi-vat-rates-api/) — The VAT Rates API from UniRate API — 1 operation(s) for vat rates.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [UniRate MCP Server](https://apis.io/servers/unirateapi/unirate-mcp-server/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Unirateapi Openapi Overlay](https://apis.io/overlays/unirateapi/unirateapi-openapi-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Unirateapi Authentication](https://apis.io/security/unirateapi/unirateapi-authentication/)
+- [Unirateapi Domain Security](https://apis.io/security/unirateapi/unirateapi-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Unirateapi Plans Pricing](https://apis.io/plans/unirateapi/unirateapi-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Unirateapi Rate Limits](https://apis.io/rate-limits/unirateapi/unirateapi-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://unirateapi.com)
+- [Pricing](https://unirateapi.com/pricing)
+- [Sign up](https://unirateapi.com/register)
+- [Blog](https://unirateapi.com/articles/)
+- [Terms of service](https://unirateapi.com/terms)
+- [Privacy policy](https://unirateapi.com/privacy)
+
+## API Evangelist rating
+
+**Kin Score 49.5** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 65.0 |
+| Contract quality | 47.1 |
+| Contract governance | 4.5 |
+| Operational transparency | 36.8 |
+| Developer ergonomics | 56.5 |
+| Access clarity | 65.8 |
+
+**Agent readiness 34.2** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | na |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | na |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 24.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/unirateapi/](https://apis.io/providers/unirateapi/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for UniRate API: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/unirateapi/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
